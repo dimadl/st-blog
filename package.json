@@ -1,0 +1,21 @@
+{
+  "name": "stt-blog",
+  "version": "0.0.1",
+  "description": "Personal blog about Software.Triathlon.Travel",
+  "main": "index.js",
+  "repository": "https://github.com/dimadl/st-blog.git",
+  "author": "Dmitry Dydyshko <dimantosd@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "bootstrap": "4.1.3"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-clean-css": "^3.9.0",
+    "gulp-plumber": "^1.1.0",
+    "gulp-rigger": "^0.5.8",
+    "gulp-sass": "^3.1.0",
+    "gulp-sourcemaps": "^2.6.1",
+    "gulp-uglify": "^3.0.0"
+  }
+}
