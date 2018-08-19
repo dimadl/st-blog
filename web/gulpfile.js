@@ -22,6 +22,9 @@ var path = {
         img:   'src/img/**/*.*',
         fonts: 'srs/fonts/**/*.*'
     },
+    inject: {
+        css: './build/css/**/*.css'
+    },
     clean:     './build'
 };
 
@@ -40,18 +43,23 @@ var gulp = require('gulp'),
     sass = require('gulp-sass'),
     cleanCSS = require('gulp-clean-css'),
     uglify = require('gulp-uglify'),
-    cleanBuild = require('del');;
+    cleanBuild = require('del'),
+    inject = require('gulp-inject');
 
 gulp.task('webserver', function () {
   webserver(config);
 });
 
 gulp.task('html:build', function () {
-  gulp.src(path.src.html)
-      .pipe(plumber())
-      .pipe(rigger())
-      .pipe(gulp.dest(path.build.html))
-      .pipe(webserver.reload({stream:true}))
+
+  var target = gulp.src(path.src.html);
+  var sources = gulp.src([path.inject.css, path.src.js], {read: false});
+
+  target.pipe(plumber())
+        .pipe(rigger())
+        .pipe(inject(sources, {ignorePath:'build/', addRootSlash:false}))
+        .pipe(gulp.dest('./build'))
+        .pipe(webserver.reload({stream:true}))
 });
 
 gulp.task('css:build', function () {
@@ -72,14 +80,20 @@ gulp.task('js:build', function () {
         .pipe(webserver.reload({stream: true}));
 });
 
+gulp.task('img:build', function() {
+    gulp.src(path.src.img)
+        .pipe(gulp.dest(path.build.img))
+        .pipe(webserver.reload({stream: true}));
+})
+
 gulp.task('clean:build', function () {
     cleanBuild.sync(path.clean);
 });
 
 gulp.task('build', [
     'clean:build',
-    'html:build',
-    'css:build'
+    'css:build',
+    'html:build'
 ]);
 
 gulp.task('watch', function() {
