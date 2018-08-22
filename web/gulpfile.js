@@ -23,7 +23,8 @@ var path = {
         fonts: 'srs/fonts/**/*.*'
     },
     inject: {
-        css: './build/css/**/*.css'
+        css: './build/css/**/*.css',
+        js: './build/js/**/*.js'
     },
     clean:     './build'
 };
@@ -53,7 +54,7 @@ gulp.task('webserver', function () {
 gulp.task('html:build', function () {
 
   var target = gulp.src(path.src.html);
-  var sources = gulp.src([path.inject.css, path.src.js], {read: false});
+  var sources = gulp.src([path.inject.css, path.inject.js], {read: false});
 
   target.pipe(plumber())
         .pipe(rigger())
@@ -73,7 +74,6 @@ gulp.task('css:build', function () {
 
 gulp.task('js:build', function () {
     gulp.src(path.src.js)
-        .pipe(plumber())
         .pipe(rigger())
         .pipe(uglify())
         .pipe(gulp.dest(path.build.js))
@@ -93,6 +93,7 @@ gulp.task('clean:build', function () {
 gulp.task('build', [
     'clean:build',
     'css:build',
+    'js:build',
     'html:build'
 ]);
 
